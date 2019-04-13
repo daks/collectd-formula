@@ -11,6 +11,7 @@ before_install:
 
 env:
   matrix:
+    - INSTANCE: no-service-debian-9
     - INSTANCE: v2019-2-py3-debian-9
     - INSTANCE: v2019-2-py3-ubuntu-1804
     #- INSTANCE: v2019-2-py3-centos-7

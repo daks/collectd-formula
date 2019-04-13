@@ -56,6 +56,34 @@ verifier:
     - cli
 
 suites:
+  # Service disabled
+  - name: no-service
+    includes:
+      - debian-9
+    provisioner:
+      # If we don't force bootstrapping with python3, centos bootstraps using python2
+      # and then, when switching the repo to python3 and tries to install
+      # the packages, complains with
+      # Downloading packages:
+      #   https://repo.saltstack.com/py3/re.........rpm: [Errno -1] Package does not
+      # match intended download. Suggestion: run yum --enablerepo=saltstack clean metadata
+      salt_bootstrap_options: -X -x python3 -d git %s
+      salt_version: '2019.2'
+      pillars:
+        salt.sls:
+          salt:
+            release: '2019.2'
+            py_ver: 'py3'
+      pillars_from_files:
+        collectd.sls: test/salt/no-service/pillar/collectd.sls
+
+
+    verifier:
+      inspec_tests:
+        - path: test/integration/no-service
+
+  # Default suite
+
   # Latest distros, latest salt, python3
   # These distros have py3 packages available in salt's repo
   - name: v2019-2-py3
